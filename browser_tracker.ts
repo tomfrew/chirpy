@@ -3,7 +3,7 @@ interface Tracker {
 }
 
 function tracker(projectId: string): Tracker {
-    if (!projectId || typeof projectId != "string") {
+    if (!projectId || typeof projectId !== "string") {
         console.error("Wrong project id provided to tracker. Events won't be tracked");
         return {
             event() {
@@ -17,30 +17,37 @@ function tracker(projectId: string): Tracker {
     //TODO will be relevant for allowed urls list
     let currentPageHost = window.location.hostname
     
-    // TODO api call for tracking event of this page being accessed
-    fetch("", {
+    fetch("https://staging--hack-preprep-JTRtt0.keelapps.xyz/Tracker/createTrackingEvent", {
         method: "POST",
         body: JSON.stringify({
             name: "page-view",
             metadata: currentPagePath,
             projectId: projectId,
         }),
-    })
+    }).catch(reason => {
+        console.error("Couldn't track event of page being opened due to ", reason);
+    });
 
     // TODO can we subscribe to browser events whenever the url changes?
     // are there other interesting events?
 
     return {
-        event(label: string) {
-            return new Promise(() => {
-                if (!label) {
-                    console.error("label undefined for event tracker submitted event");
-                    return
-                }
+        event(label: string): Promise<void> {
+            if (!label || typeof label !== "string") {
+                console.error("Wrong label type provided for event tracker submitted event");
+                return Promise.resolve()
+            }
 
-                // TODO api call for tracking event
-
-            });
+            return fetch("https://staging--hack-preprep-JTRtt0.keelapps.xyz/Tracker/createTrackingEvent", {
+                method: "POST",
+                body: JSON.stringify({
+                    name: label,
+                    metadata: currentPagePath,
+                    projectId: projectId,
+                }),
+            }).catch(reason => {
+                console.error("Couldn't track event of page being opened due to ", reason);
+            }).then(() => {})
         },
     }
 }
