@@ -1,76 +1,98 @@
-model Todo {
+model Account {
     fields {
-        complete Boolean @default(false)
-        title Text
-        description Text?
-        completedAt Timestamp?
-        owner Identity
-        project Project?
+        identity Identity @unique
+        name Text
+        projects AccountProject[]
     }
 
     operations {
-        get todo(id)
-        list allTodos(complete?, project.id?) {
-            @where(todo.owner == ctx.identity)
-        }
-        delete deleteTodo(id)
-        update updateTodo(id) with (title?, description?, project.id?)
-        create createTodo() with (title, description?, project.id?) {
+        create createAccount() with (name) {
             @permission(expression: ctx.isAuthenticated)
-            @set(todo.owner = ctx.identity)
+            @set(account.identity = ctx.identity)
         }
-    }
-
-    functions {
-        update setCompletion(id) with (complete)
+        get myAccount() {
+            @where(account.identity == ctx.identity)
+        }
     }
 
     @permission(
-        actions: [get, list, update, delete],
-        expression: todo.owner == ctx.identity
+        actions: [get, update, delete],
+        expression: ctx.identity == account.identity
     )
+}
+
+model AccountProject {
+    fields {
+        account Account
+        project Project
+    }
 }
 
 model Project {
     fields {
         title Text
-        owner Identity
-        tasks Todo[]
+        accounts AccountProject[]
+
+        //TODO: add allowed URLs list so that we only accept events sent from within that webpage
     }
 
     operations {
         get getProject(id)
         list listProjects() {
-            @where(project.owner == ctx.identity)
+            @where(ctx.identity in project.accounts.account.identity)
         }
         delete deleteProject(id)
+        
+        update updateProject(id) with (title)
+    }
+
+    // This is weird (custom functions can't access ctx yet)
+    // TODO: find out how to pass an account id in there somewhere
+    functions {
         create createProject() with (title) {
             @permission(expression: ctx.isAuthenticated)
-            @set(project.owner = ctx.identity)
         }
-        update updateProject(id) with (title)
     }
 
     @permission(
         actions: [get, list, update, delete],
-        expression: project.owner == ctx.identity
+        expression: ctx.identity in project.accounts.account.identity
     )
 }
 
-api Web {
-    @graphql
-
-    models {
-        Todo
-        Project
+model TrackingEvent {
+    fields {
+        name Text
+        project Project
+        metadata Text?
+        // TODO: this should come from the browser. Search for other cool data to add
+        userAgent Text?
+        // TODO: add this to tracker so it can be provided
+        userId Text?
+    }
+    
+    functions {
+        create createTrackingEvent() with (name, metadata, projectId) {
+            @permission(expression: true)
+        }
     }
 }
 
-api Console {
+api Tracker {
     @rpc
 
     models {
-        Todo
+        TrackingEvent
+    }
+}
+
+api Admin {
+    @graphql
+
+    models {
+        Account
+        AccountProject
         Project
+        TrackingEvent
     }
 }
