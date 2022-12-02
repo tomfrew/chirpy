@@ -39,7 +39,6 @@ model Project {
     fields {
         title Text
         accounts AccountProject[]
-
         //TODO: add allowed URLs list so that we only accept events sent from within that webpage
     }
 
@@ -52,18 +51,18 @@ model Project {
             @where(ctx.identity in project.accounts.account.identity)
         }
         delete deleteProject(id)
-        
         update updateProject(id) with (title)
-    }
-
-    functions {
-        
     }
 
     @permission(
         actions: [get, list, update, delete],
         expression: ctx.identity in project.accounts.account.identity
     )
+}
+
+enum Type {
+    Pageview
+    Event
 }
 
 model TrackingEvent {
@@ -75,10 +74,11 @@ model TrackingEvent {
         userAgent Text?
         // TODO: add this to tracker so it can be provided
         userId Text?
+        type Type?
     }
-    
+
     functions {
-        create createTrackingEvent() with (name, metadata, projectId) {
+        create createTrackingEvent() with (name, metadata, projectId, type) {
             @permission(expression: true)
         }
     }
