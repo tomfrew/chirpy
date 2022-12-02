@@ -2,7 +2,7 @@ import { CreateTrackingEvent } from "@teamkeel/sdk";
 import Pusher from "pusher";
 
 export default CreateTrackingEvent(async (inputs, api) => {
-  const createResult = await api.models.trackingEvent.create(...inputs);
+  const createResult = await api.models.trackingEvent.create({ ...inputs });
 
   if (createResult.errors && createResult.errors.length) {
     return createResult;
