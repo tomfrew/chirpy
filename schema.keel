@@ -26,6 +26,13 @@ model AccountProject {
         account Account
         project Project
     }
+
+    // It feels like this shouldn't be a thing and instead be created as part of project creation
+    operations {
+        create createAccountProject() with (accountId, projectId) {
+            @permission(expression: ctx.identity == accountProject.account.identity)
+        }
+    }
 }
 
 model Project {
@@ -38,6 +45,9 @@ model Project {
 
     operations {
         get getProject(id)
+        create createProject() with (title) {
+            @permission(expression: ctx.isAuthenticated)
+        }
         list listProjects() {
             @where(ctx.identity in project.accounts.account.identity)
         }
@@ -46,12 +56,8 @@ model Project {
         update updateProject(id) with (title)
     }
 
-    // This is weird (custom functions can't access ctx yet)
-    // TODO: find out how to pass an account id in there somewhere
     functions {
-        create createProject() with (title) {
-            @permission(expression: ctx.isAuthenticated)
-        }
+        
     }
 
     @permission(
