@@ -2,6 +2,43 @@ import { CreateTrackingEvent } from "@teamkeel/sdk";
 import Pusher from "pusher";
 
 export default CreateTrackingEvent(async (inputs, api) => {
+
+  const allowedUrlsResult = await api.models.allowedUrl.findMany({projectId: inputs.projectId});
+
+  if (allowedUrlsResult.errors && allowedUrlsResult.errors.length) {
+    return allowedUrlsResult;
+  }
+
+  const allowedUrls = allowedUrlsResult.collection;
+
+  const urlIsInAllowedUrls: () => boolean = () => {
+    if (inputs.host === undefined || inputs.host === null) {
+      return false;
+    }
+    return allowedUrls.some((allowedUrl) => {
+      console.log("url", allowedUrl.url, inputs.host.endsWith(allowedUrl.url));
+      return inputs.host.endsWith(allowedUrl.url);
+    });
+   }
+
+  const requestComesFromAllowedUrl = 
+    allowedUrls.length == 0 || urlIsInAllowedUrls();
+
+  console.log("allowedUrls", allowedUrls, "\n\n");
+  console.log("allowedUrls.length == 0", allowedUrls.length == 0);
+  console.log("requestComesFromAllowedUrl", requestComesFromAllowedUrl);
+
+  if (!requestComesFromAllowedUrl) {
+    return {
+      errors: [
+        {
+          message: "not allowed",
+          stack: "",
+        },
+      ],
+    };
+  }
+
   const createResult = await api.models.trackingEvent.create({ ...inputs });
 
   if (createResult.errors && createResult.errors.length) {

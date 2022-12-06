@@ -60,6 +60,28 @@ model Project {
     )
 }
 
+model AllowedUrl {
+    fields {
+        url Text
+        project Project
+    }
+
+    operations {
+        create createAllowedUrl() with (url, projectId) {
+            @permission(expression: true)
+            // @permission(expression: allowedUrl.project.accounts.account.identity == ctx.identity)
+        }
+        list getAllowedUrls(projectId) {
+            @where(allowedUrl.project.accounts.account.identity == ctx.identity)
+            @permission(expression: true)
+        }
+        delete deleteAllowedUrl(id) {
+            @where(allowedUrl.project.accounts.account.identity == ctx.identity)
+            @permission(expression: true)
+        }
+    }
+}
+
 enum Type {
     Pageview
     Event
@@ -70,6 +92,7 @@ model TrackingEvent {
         name Text
         project Project
         metadata Text?
+        host Text?
         // TODO: this should come from the browser. Search for other cool data to add
         userAgent Text?
         // TODO: add this to tracker so it can be provided
@@ -78,7 +101,7 @@ model TrackingEvent {
     }
 
     functions {
-        create createTrackingEvent() with (name, metadata, projectId, type) {
+        create createTrackingEvent() with (name, metadata, host, projectId, type) {
             @permission(expression: true)
         }
     }
@@ -99,6 +122,7 @@ api Admin {
         Account
         AccountProject
         Project
+        AllowedUrl
         TrackingEvent
     }
 }

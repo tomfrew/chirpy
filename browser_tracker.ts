@@ -10,22 +10,20 @@ export function tracker(projectId: string): Tracker {
         console.error("Wrong project id provided to tracker. Events won't be tracked");
         return {
             event() {
-                return Promise.resolve()    
+                return Promise.resolve()
             }
         }
     }
 
     let currentPagePath = window.location.pathname
 
-    //TODO will be relevant for allowed urls list
-    let currentPageHost = window.location.hostname
-    
     fetch(createTrackingEventBackendUrl, {
         method: "POST",
         body: JSON.stringify({
             name: "page-view",
             metadata: currentPagePath,
             projectId: projectId,
+            host: window.location.hostname,
         }),
     }).catch(reason => {
         console.error("Couldn't track event of page being opened due to ", reason);
@@ -47,6 +45,7 @@ export function tracker(projectId: string): Tracker {
                     name: label,
                     metadata: currentPagePath,
                     projectId: projectId,
+                    host: window.location.hostname,
                 }),
             }).catch(reason => {
                 console.error("Couldn't track event of page being opened due to ", reason);
