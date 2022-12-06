@@ -16,17 +16,12 @@ export default CreateTrackingEvent(async (inputs, api) => {
       return false;
     }
     return allowedUrls.some((allowedUrl) => {
-      console.log("url", allowedUrl.url, inputs.host.endsWith(allowedUrl.url));
       return inputs.host.endsWith(allowedUrl.url);
     });
    }
 
   const requestComesFromAllowedUrl = 
     allowedUrls.length == 0 || urlIsInAllowedUrls();
-
-  console.log("allowedUrls", allowedUrls, "\n\n");
-  console.log("allowedUrls.length == 0", allowedUrls.length == 0);
-  console.log("requestComesFromAllowedUrl", requestComesFromAllowedUrl);
 
   if (!requestComesFromAllowedUrl) {
     return {
