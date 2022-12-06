@@ -27,10 +27,10 @@ model AccountProject {
         project Project
     }
 
-    // It feels like this shouldn't be a thing and instead be created as part of project creation
+    // Ideally be created as created as part of project creation via a function
     operations {
         create createAccountProject() with (accountId, projectId) {
-            @permission(expression: ctx.identity == accountProject.account.identity)
+            @permission(expression: accountProject.account.identity == ctx.identity)
         }
     }
 }
@@ -48,7 +48,7 @@ model Project {
             @permission(expression: ctx.isAuthenticated)
         }
         list listProjects() {
-            @where(ctx.identity in project.accounts.account.identity)
+            @where(project.accounts.account.identity == ctx.identity)
         }
         delete deleteProject(id)
         update updateProject(id) with (title)
@@ -56,7 +56,7 @@ model Project {
 
     @permission(
         actions: [get, list, update, delete],
-        expression: ctx.identity in project.accounts.account.identity
+        expression: project.accounts.account.identity == ctx.identity
     )
 }
 
