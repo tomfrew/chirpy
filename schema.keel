@@ -30,7 +30,7 @@ model AccountProject {
     // Ideally be created as created as part of project creation via a function
     operations {
         create createAccountProject() with (accountId, projectId) {
-            @permission(expression: accountProject.account.identity == ctx.identity)
+            @permission(expression: ctx.isAuthenticated)
         }
     }
 }
