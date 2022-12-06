@@ -76,7 +76,6 @@ model AllowedUrl {
             @permission(expression: true)
         }
         delete deleteAllowedUrl(id) {
-            @where(allowedUrl.project.accounts.account.identity == ctx.identity)
             @permission(expression: true)
         }
     }
