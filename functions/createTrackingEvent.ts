@@ -1,4 +1,4 @@
-import { CreateTrackingEvent } from "@teamkeel/sdk";
+import { CreateTrackingEvent, Chirp } from "@teamkeel/sdk";
 import Pusher from "pusher";
 
 export default CreateTrackingEvent(async (inputs, api) => {
@@ -67,6 +67,22 @@ export default CreateTrackingEvent(async (inputs, api) => {
         },
       ],
     };
+  }
+
+  // This should be some sort of upsert
+  const existingTrackingEventChirp = await api.models.trackingEventChirp.findMany({eventName: inputs.name, projectId: inputs.projectId});
+  if (existingTrackingEventChirp.errors && existingTrackingEventChirp.errors.length) {
+    return existingTrackingEventChirp;
+  }
+  if (!existingTrackingEventChirp.collection.length) {
+    const createTrackingEventChirpResult = await api.models.trackingEventChirp.create({eventName: inputs.name, chirp: Chirp.Click, projectId: inputs.projectId});
+    if (createTrackingEventChirpResult.errors && createTrackingEventChirpResult.errors.length) {
+      return createTrackingEventChirpResult;
+    }
+  }
+
+  if (allowedUrlsResult.errors && allowedUrlsResult.errors.length) {
+    return allowedUrlsResult;
   }
 
   return createResult;

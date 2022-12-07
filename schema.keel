@@ -106,6 +106,30 @@ model TrackingEvent {
     }
 }
 
+enum Chirp {
+    Silent
+    Click
+    Pop
+    Tadah
+    Woosh
+}
+
+model TrackingEventChirp {
+    fields {
+        eventName Text
+        chirp Chirp
+        project Project
+    }
+
+    operations {
+        list getTrackingEventChirp(projectId) {
+            @where(trackingEventChirp.project.accounts.account.identity == ctx.identity)
+            @permission(expression: true)
+        }
+        update updateTrackingEventChirp(id) with (chirp)
+    }
+}
+
 api Tracker {
     @rpc
 
@@ -123,5 +147,6 @@ api Admin {
         Project
         AllowedUrl
         TrackingEvent
+        TrackingEventChirpConfiguration
     }
 }
