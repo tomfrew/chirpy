@@ -35,21 +35,6 @@ model AccountProject {
     }
 }
 
-model ProjectInvite {
-    fields {
-        email Text
-        project Project
-        code Text
-        expiry Timestamp
-    }
-
-    functions {
-        create createProjectInvite() with (email, projectId) {
-
-        }
-    }
-}
-
 model Project {
     fields {
         title Text
