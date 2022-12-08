@@ -92,6 +92,7 @@ model TrackingEvent {
         project Project
         metadata Text?
         host Text?
+        url Text?
         // TODO: this should come from the browser. Search for other cool data to add
         userAgent Text?
         // TODO: add this to tracker so it can be provided
@@ -100,7 +101,7 @@ model TrackingEvent {
     }
 
     functions {
-        create createTrackingEvent() with (name, metadata, host, projectId, type) {
+        create createTrackingEvent() with (name, metadata, host, url, projectId, type) {
             @permission(expression: true)
         }
     }
