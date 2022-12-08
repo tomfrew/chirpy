@@ -15,6 +15,12 @@ model Account {
         }
     }
 
+    functions {
+        create acceptInvite() with (identity, name, code: Text) {
+            @permission(expression: true)
+        }
+    }
+
     @permission(
         actions: [get, update, delete],
         expression: ctx.identity == account.identity
@@ -58,6 +64,28 @@ model Project {
         actions: [get, list, update, delete],
         expression: project.accounts.account.identity == ctx.identity
     )
+}
+
+model ProjectInvite {
+    fields {
+        email Text
+        project Project
+        code Text
+        expiry Timestamp
+    }
+
+    operations {
+        list listProjectInvites() {
+            @where(projectInvite.project.accounts.account.identity == ctx.identity)
+        }
+    }
+
+    functions {
+        // It's awkward that we have to send the "code" input from the frontend. We'll disregard the input.
+        create createProjectInvite() with (email, projectId, code, expiry) {
+            @permission(expression: projectInvite.project.accounts.account.identity == ctx.identity)
+        }
+    }
 }
 
 model AllowedUrl {
@@ -144,6 +172,7 @@ api Admin {
         Account
         AccountProject
         Project
+        ProjectInvite
         AllowedUrl
         TrackingEvent
         TrackingEventChirp
