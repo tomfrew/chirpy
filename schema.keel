@@ -150,11 +150,14 @@ model TrackingEventChirp {
     }
 
     operations {
-        list getTrackingEventChirp(projectId) {
-            @permission(expression: true)
-        }
+        list getTrackingEventChirp(projectId)
         update updateTrackingEventChirp(id) with (chirp)
     }
+
+    @permission(
+        actions: [list, update],
+        expression: trackingEventChirp.project.accounts.account.identity == ctx.identity
+    )
 }
 
 api Tracker {
