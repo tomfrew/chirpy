@@ -113,6 +113,7 @@ enum Chirp {
     Pop
     Tadah
     Woosh
+    Celebrate
 }
 
 model TrackingEventChirp {
