@@ -100,12 +100,15 @@ model TrackingEvent {
         type Type?
     }
 
+    operations {
+        list listEvents(project.id) {
+            @permission(expression: trackingEvent.project.accounts.account.identity == ctx.identity)
+        }
+    }
+
     functions {
         create createTrackingEvent() with (name, metadata, host, url, projectId, type) {
             @permission(expression: true)
-        }
-        list listEvents(project.id) {
-            @permission(expression: trackingEvent.project.accounts.account.identity == ctx.identity)
         }
     }
 }
