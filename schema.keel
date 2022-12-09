@@ -113,7 +113,13 @@ enum Chirp {
     Pop
     Tadah
     Woosh
-    Celebrate
+    Yoohoo
+    Yaaas
+    TrumpetFanfare
+    Woohoo
+    Yay
+    GentleYay
+    TadaFanfare
 }
 
 model TrackingEventChirp {
