@@ -68,17 +68,19 @@ model AllowedUrl {
 
     operations {
         create createAllowedUrl() with (url, projectId) {
-            @permission(expression: true)
+            @permission(expression: ctx.isAuthenticated)
             // @permission(expression: allowedUrl.project.accounts.account.identity == ctx.identity)
         }
         list getAllowedUrls(projectId) {
             @where(allowedUrl.project.accounts.account.identity == ctx.identity)
-            @permission(expression: true)
         }
-        delete deleteAllowedUrl(id) {
-            @permission(expression: true)
-        }
+        delete deleteAllowedUrl(id)
     }
+
+    @permission(
+        actions: [get, list, delete, update],
+        expression: allowedUrl.project.accounts.account.identity == ctx.identity
+    )
 }
 
 enum Type {
