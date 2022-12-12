@@ -80,7 +80,7 @@ export default CreateTrackingEvent(async (inputs, api) => {
     existingTrackingEventChirp.errors &&
     existingTrackingEventChirp.errors.length
   ) {
-    return existingTrackingEventChirp;
+    return { errors: existingTrackingEventChirp.errors };
   }
   if (!existingTrackingEventChirp.collection.length) {
     const createTrackingEventChirpResult =
@@ -93,7 +93,7 @@ export default CreateTrackingEvent(async (inputs, api) => {
       createTrackingEventChirpResult.errors &&
       createTrackingEventChirpResult.errors.length
     ) {
-      return createTrackingEventChirpResult;
+      return { errors: createTrackingEventChirpResult.errors };
     }
   }
 

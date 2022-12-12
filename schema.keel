@@ -33,13 +33,19 @@ model AccountProject {
             @permission(expression: ctx.isAuthenticated)
         }
     }
+
+    functions {
+        create acceptInvite() with (accountId, projectId, projectInviteId: Text) {
+            @permission(expression: ctx.isAuthenticated)
+        }
+    }
 }
 
 model Project {
     fields {
         title Text
         accounts AccountProject[]
-        //TODO: add allowed URLs list so that we only accept events sent from within that webpage
+        allowedUrls AllowedUrl[]
     }
 
     operations {
@@ -58,6 +64,27 @@ model Project {
         actions: [get, list, update, delete],
         expression: project.accounts.account.identity == ctx.identity
     )
+}
+
+model ProjectInvite {
+    fields {
+        email Text
+        project Project
+        expiry Timestamp
+    }
+
+    operations {
+        list listProjectInvites() {
+            @where(projectInvite.project.accounts.account.identity == ctx.identity)
+        }
+    }
+
+    functions {
+        // It's awkward that we have to send the "expiry" input from the frontend. We'll disregard the input.
+        create createProjectInvite() with (email, projectId, expiry) {
+            @permission(expression: true)
+        }
+    }
 }
 
 model AllowedUrl {
@@ -163,6 +190,7 @@ api Admin {
         Account
         AccountProject
         Project
+        ProjectInvite
         AllowedUrl
         TrackingEvent
         TrackingEventChirp
