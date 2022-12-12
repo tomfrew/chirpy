@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@teamkeel/testing": "^0.193.0",
+    "node-fetch": "^3.3.0",
     "pusher": "^5.1.1-beta"
   },
   "name": "exampleproject",
