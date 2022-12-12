@@ -2,8 +2,9 @@ import { CreateTrackingEvent, Chirp } from "@teamkeel/sdk";
 import Pusher from "pusher";
 
 export default CreateTrackingEvent(async (inputs, api) => {
-
-  const allowedUrlsResult = await api.models.allowedUrl.findMany({projectId: inputs.projectId});
+  const allowedUrlsResult = await api.models.allowedUrl.findMany({
+    projectId: inputs.projectId,
+  });
 
   if (allowedUrlsResult.errors && allowedUrlsResult.errors.length) {
     return allowedUrlsResult;
@@ -18,9 +19,9 @@ export default CreateTrackingEvent(async (inputs, api) => {
     return allowedUrls.some((allowedUrl) => {
       return inputs.host.endsWith(allowedUrl.url);
     });
-   }
+  };
 
-  const requestComesFromAllowedUrl = 
+  const requestComesFromAllowedUrl =
     allowedUrls.length == 0 || urlIsInAllowedUrls();
 
   if (!requestComesFromAllowedUrl) {
@@ -70,13 +71,28 @@ export default CreateTrackingEvent(async (inputs, api) => {
   }
 
   // This should be some sort of upsert
-  const existingTrackingEventChirp = await api.models.trackingEventChirp.findMany({eventName: inputs.name, projectId: inputs.projectId});
-  if (existingTrackingEventChirp.errors && existingTrackingEventChirp.errors.length) {
+  const existingTrackingEventChirp =
+    await api.models.trackingEventChirp.findMany({
+      eventName: inputs.name,
+      projectId: inputs.projectId,
+    });
+  if (
+    existingTrackingEventChirp.errors &&
+    existingTrackingEventChirp.errors.length
+  ) {
     return { errors: existingTrackingEventChirp.errors };
   }
   if (!existingTrackingEventChirp.collection.length) {
-    const createTrackingEventChirpResult = await api.models.trackingEventChirp.create({eventName: inputs.name, chirp: Chirp.Click, projectId: inputs.projectId});
-    if (createTrackingEventChirpResult.errors && createTrackingEventChirpResult.errors.length) {
+    const createTrackingEventChirpResult =
+      await api.models.trackingEventChirp.create({
+        eventName: inputs.name,
+        chirp: Chirp.Click,
+        projectId: inputs.projectId,
+      });
+    if (
+      createTrackingEventChirpResult.errors &&
+      createTrackingEventChirpResult.errors.length
+    ) {
       return { errors: createTrackingEventChirpResult.errors };
     }
   }
