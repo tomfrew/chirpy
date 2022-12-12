@@ -74,8 +74,10 @@ model ProjectInvite {
     }
 
     operations {
-        list listProjectInvites() {
+        list activeProjectInvites() {
             @where(projectInvite.project.accounts.account.identity == ctx.identity)
+            @where(projectInvite.expiry > ctx.now)
+            @permission(expression: ctx.isAuthenticated)
         }
     }
 
