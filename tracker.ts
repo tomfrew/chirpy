@@ -28,7 +28,7 @@
 // <script>
 //   window.chirpyData = [];
 //   window.chirpyProjectId = 'PROJECT_ID';
-//   function chirpy(name,metadata){chirpyData.push({name:name,metadata:metadata});chirpyClient?.processRegisteredWindowEvents();}
+//   function chirpy(name,metadata){chirpyData.push({name:name,metadata:metadata});window.chirpyClient?.processRegisteredWindowEvents();}
 //   chirpy('page-view', window.location.pathname);
 // </script>
 // <script async type="module" src="SCRIPT_SRC"></script>
