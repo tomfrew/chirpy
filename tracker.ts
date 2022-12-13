@@ -136,9 +136,12 @@ function createTracker(projectId: string): Tracker {
 
 function init() {
     const projectId = globalThis.chirpyProjectId
-    if(projectId) {
-        globalThis.chirpyClient = createTracker(projectId);
+    if (!isNonEmptyString(projectId)) {
+        return;
     }
+    
+    globalThis.chirpyClient = createTracker(projectId);
+
     globalThis.chirpyClient.processRegisteredWindowEvents();
 }
 

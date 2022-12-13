@@ -16,7 +16,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "tracker:build": "tsc tracker.ts",
+    "tracker:build": "tsc tracker.ts && sed -i '.bak' '1s/^/let exports = window.exports || {};\\n/' tracker.js && rm tracker.js.bak",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
