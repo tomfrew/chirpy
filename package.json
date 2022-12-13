@@ -16,6 +16,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "tracker:build": "tsc tracker.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

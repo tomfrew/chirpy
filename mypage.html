@@ -7,8 +7,14 @@
     <title>MyPage</title>
 </head>
 <body>
-    <script src="browser_tracker_example.js"></script>
+    <script>
+      window.chirpyData = [];
+      window.chirpyProjectId = '2IXY99zih9qDP4qnDPoLWpU5kR6';
+      function chirpy(name,metadata){chirpyData.push({name:name,metadata:metadata});window.chirpyClient?.processRegisteredWindowEvents();}
+      chirpy('page-view', window.location.pathname);
+    </script>
+    <script async type="module" src="tracker.js"></script>
     <h1>MyPage</h1>
-    <button onclick="trackClick()">Click me</button>
+    <button onclick="chirpy('button-click')">Click me</button>
 </body>
 </html>
