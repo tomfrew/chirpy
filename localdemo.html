@@ -10,12 +10,13 @@
     <!-- Chirpy analytics -->
     <script>
       window.chirpyData = [];
-      window.chirpyProjectId = '2IXY99zih9qDP4qnDPoLWpU5kR6';
+      window.chirpyProjectId = '2Ith1cJZd9DOfDOcgfaJMLlY9kT';
       function chirpy(name,metadata){chirpyData.push({name:name,metadata:metadata});window.chirpyClient?.processRegisteredWindowEvents();}
       chirpy('page-view', window.location.pathname);
     </script>
     <script async type="module" src="tracker.js"></script>
     <h1>MyPage</h1>
     <button onclick="chirpy('button-click')">Click me</button>
+    <button onclick="window.history.pushState('somestate','Results for `Cats`','cats.html')">Change page</button>
 </body>
 </html>

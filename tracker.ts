@@ -49,6 +49,8 @@ interface Tracker {
 const createTrackingEventBackendUrl = "http://localhost:8000/Tracker/createTrackingEvent"
 // const createTrackingEventBackendUrl = "https://staging--hack-preprep-JTRtt0.keelapps.xyz/Tracker/createTrackingEvent"
 
+const locationChangeEvent = "locationchange"
+
 export function chirpyClientTracker(projectId: string): Tracker {
     if (!isNonEmptyString(projectId)) {
         console.error("Wrong project id provided to tracker. Events won't be tracked");
@@ -59,7 +61,7 @@ export function chirpyClientTracker(projectId: string): Tracker {
     // are there other interesting events?
 
     const t = createTracker(projectId);
-    
+
     return t;
 }
 
@@ -129,9 +131,24 @@ function createTracker(projectId: string): Tracker {
 
             globalThis.chirpyData = [];
 
-            return Promise.all(promises).then(() => {});
+            return Promise.all(promises).then(() => { });
         }
     }
+}
+
+function alterHistoryFunctionsToFireEvent() {
+    const pushState = history.pushState;
+    const replaceState = history.replaceState;
+
+    history.pushState = function () {
+        pushState.apply(history, arguments);
+        window.dispatchEvent(new Event(locationChangeEvent));
+    };
+
+    history.replaceState = function () {
+        replaceState.apply(history, arguments);
+        window.dispatchEvent(new Event(locationChangeEvent));
+    };
 }
 
 function init() {
@@ -139,10 +156,17 @@ function init() {
     if (!isNonEmptyString(projectId)) {
         return;
     }
-    
-    globalThis.chirpyClient = createTracker(projectId);
 
-    globalThis.chirpyClient.processRegisteredWindowEvents();
+    const client = createTracker(projectId);
+    globalThis.chirpyClient = client
+
+    client.processRegisteredWindowEvents();
+
+    alterHistoryFunctionsToFireEvent();
+
+    window.addEventListener(locationChangeEvent, () => {
+        client.event('page-view', window.location.pathname);
+    });
 }
 
 init();
