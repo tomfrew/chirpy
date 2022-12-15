@@ -47,7 +47,7 @@ interface Tracker {
 }
 
 // const createTrackingEventBackendUrl = "http://localhost:8000/Tracker/createTrackingEvent"
-const createTrackingEventBackendUrl = "https://staging--hack-preprep-JTRtt0.keelapps.xyz/Tracker/createTrackingEvent"
+const createTrackingEventBackendUrl = "https://f1ykfa3psh.execute-api.eu-west-2.amazonaws.com/Tracker"
 
 const locationChangeEvent = "locationchange"
 
