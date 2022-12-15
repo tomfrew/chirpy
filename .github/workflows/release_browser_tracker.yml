@@ -30,6 +30,7 @@ jobs:
           git config --global user.email "hugo@keel.xyz"
           git config --global user.name "Auto Release"
           rm .gitignore
+          git add .gitignore
           git add tracker.js
           git commit -m "Add tracker.js"
       - name: Push to 'release-browser' branch so we can use it on jsdelivr
