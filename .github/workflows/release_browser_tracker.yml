@@ -25,7 +25,7 @@ jobs:
           tag: mainrelease
           overwrite: true
           body: "Yay, another release! We're haven't automated release notes with useful text. Sorry."
-      - name: Commit tracker.js file
+      - name: Push to 'release-browser' branch so we can use it on jsdelivr
         run: |
           git config --global user.email "hugo@keel.xyz"
           git config --global user.name "Auto Release"
@@ -33,11 +33,4 @@ jobs:
           git add .gitignore
           git add tracker.js
           git commit -m "Add tracker.js"
-      - name: Push to 'release-browser' branch so we can use it on jsdelivr
-        uses: s0/git-publish-subdir-action@develop
-        env:
-          REPO: self
-          BRANCH: release-browser
-          FOLDER: .
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          MESSAGE: "Release"
+          git push --force origin release-browser
