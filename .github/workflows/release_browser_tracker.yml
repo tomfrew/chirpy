@@ -22,6 +22,6 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: tracker.js
           asset_name: tracker.js
-          tag: ${{ github.ref }}
+          tag: mainrelease
           overwrite: true
           body: "Yay, another release! We're haven't automated release notes with useful text. Sorry."
