@@ -35,7 +35,8 @@ model AccountProject {
     }
 
     functions {
-        create acceptInvite() with (accountId, projectInviteId: Text) {
+        // projectId is ignored
+        create acceptInvite() with (accountId, projectId, projectInviteId: Text) {
             @permission(expression: ctx.isAuthenticated)
         }
     }

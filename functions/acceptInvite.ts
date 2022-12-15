@@ -1,6 +1,12 @@
 import { AcceptInvite } from '@teamkeel/sdk'
 
 export default AcceptInvite(async (inputs, api) => {
+  inputs = {
+    ...inputs,
+    // we want to ignore projectId
+    projectId: ""
+  }
+
   // there should only be one but the fields aren't unique, as it's a linking table and only the pair is unique
   const projectInvitesResult = await api.models.projectInvite.findMany({ id: inputs.projectInviteId });
 
