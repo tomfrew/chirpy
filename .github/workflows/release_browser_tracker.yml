@@ -4,7 +4,7 @@ on:
     branches: [ main ]
 
 jobs:
-  test-functions-runtime:
+  release:
     runs-on: ubuntu-latest
 
     steps:
@@ -12,7 +12,7 @@ jobs:
         with:
           node-version: 16
       - uses: actions/checkout@v3
-      - name: Run tests
+      - name: Transpiler tracker
         run: npm run ci:tracker:build
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
