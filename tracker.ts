@@ -46,8 +46,8 @@ interface Tracker {
     processRegisteredWindowEvents(): Promise<void>
 }
 
-const createTrackingEventBackendUrl = "http://localhost:8000/Tracker/createTrackingEvent"
-// const createTrackingEventBackendUrl = "https://staging--hack-preprep-JTRtt0.keelapps.xyz/Tracker/createTrackingEvent"
+// const createTrackingEventBackendUrl = "http://localhost:8000/Tracker/createTrackingEvent"
+const createTrackingEventBackendUrl = "https://staging--hack-preprep-JTRtt0.keelapps.xyz/Tracker/createTrackingEvent"
 
 const locationChangeEvent = "locationchange"
 
