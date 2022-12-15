@@ -72,10 +72,10 @@ function isNonEmptyString(str: string) {
 function noOpTracker(): Tracker {
     return {
         event() {
-            return new Promise(resolve => resolve());
+            return Promise.resolve()
         },
         processRegisteredWindowEvents() {
-            return new Promise(resolve => resolve());
+            return Promise.resolve()
         }
     }
 }
@@ -106,7 +106,7 @@ function createTracker(projectId: string): Tracker {
             const windowChirpyData = globalThis.chirpyData;
             if (!Array.isArray(windowChirpyData)) {
                 console.error("[CHIRPY] Global chirpyData should be an array");
-                return new Promise(resolve => resolve());
+                return Promise.resolve();
             }
 
             const promises: Promise<void>[] = windowChirpyData.map(

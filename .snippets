@@ -1,0 +1,48 @@
+mutation {
+  authenticate(input: {
+    createIfNotExists: true, 
+    emailPassword: {
+      email: "hugo@keel.xyz",
+      password: "1234"
+    }
+  }) { identityCreated, token }
+}
+
+
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjJJTWV6eXc2TnAwVlhmUU5sd0JXcEhQcUZjSiIsImV4cCI6MTY3MDkwMjg1OSwiaWF0IjoxNjcwODE2NDU5fQ.Cv7unCpBauEJ1mYon_2rtnPCbvSlBIDjbZt4KNWXkK4
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjJJZ012TjU5emtZUERYT1hnVUJDUDNtNnBDdiIsImV4cCI6MTY3MDY4NTQwMiwiaWF0IjoxNjcwNTk5MDAyfQ.Zg4idtbIbMx2ao_F_iDwdLk_wZxf1JSm_anoUQqOPhQ
+
+mutation {
+  createAccount(input: {
+    name: "Hugo"
+  }) { id }
+}
+
+{
+  "data": {
+    "createAccount": {
+      "id": "2IXY7pgyCw8IT7KRQaJXxm5HY3b"
+    }
+  }
+}
+
+mutation {
+  createProject(input: {
+    title: "MyTestProject"
+  }) { id }
+}
+
+{
+  "data": {
+    "createProject": {
+      "id": "2IXY99zih9qDP4qnDPoLWpU5kR6"
+    }
+  }
+}
+
+mutation {
+  createAccountProject(input: {
+    accountId: "2IXY7pgyCw8IT7KRQaJXxm5HY3b"
+    projectId: "2IXY99zih9qDP4qnDPoLWpU5kR6"
+  }) { id }
+}
