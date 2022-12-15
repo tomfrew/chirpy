@@ -29,7 +29,7 @@
 //   window.chirpyData = [];
 //   window.chirpyProjectId = 'PROJECT_ID';
 //   function chirpy(name,metadata){chirpyData.push({name:name,metadata:metadata});window.chirpyClient?.processRegisteredWindowEvents();}
-//   chirpy('page-view', window.location.pathname);
+//   chirpy('Pageview', window.location.pathname);
 // </script>
 // <script async type="module" src="SCRIPT_SRC"></script>
 // ```
@@ -165,7 +165,7 @@ function init() {
     alterHistoryFunctionsToFireEvent();
 
     window.addEventListener(locationChangeEvent, () => {
-        client.event('page-view', window.location.pathname);
+        client.event('Pageview', window.location.pathname);
     });
 }
 
