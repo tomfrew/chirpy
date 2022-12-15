@@ -27,6 +27,7 @@ jobs:
           body: "Yay, another release! We're haven't automated release notes with useful text. Sorry."
       - name: Commit tracker.js file
         run: |
+          rm .gitignore
           git add tracker.js
           git commit -m "Add tracker.js"
       - name: Push to 'release-browser' branch so we can use it on jsdelivr
