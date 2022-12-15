@@ -27,6 +27,8 @@ jobs:
           body: "Yay, another release! We're haven't automated release notes with useful text. Sorry."
       - name: Commit tracker.js file
         run: |
+          git config --global user.email "hugo@keel.xyz"
+          git config --global user.name "Auto Release"
           rm .gitignore
           git add tracker.js
           git commit -m "Add tracker.js"
