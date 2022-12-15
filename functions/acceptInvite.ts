@@ -39,7 +39,7 @@ export default AcceptInvite(async (inputs, api) => {
 
   const createAccountProjectResult = await api.models.accountProject.create({
     accountId: inputs.accountId,
-    projectId: inputs.projectId,
+    projectId: projectInvite.projectId,
   });
 
   if (createAccountProjectResult.errors && createAccountProjectResult.errors.length) {

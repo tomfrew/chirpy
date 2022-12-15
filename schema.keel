@@ -35,7 +35,7 @@ model AccountProject {
     }
 
     functions {
-        create acceptInvite() with (accountId, projectId, projectInviteId: Text) {
+        create acceptInvite() with (accountId, projectInviteId: Text) {
             @permission(expression: ctx.isAuthenticated)
         }
     }
