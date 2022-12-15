@@ -16,15 +16,6 @@ jobs:
         run: rm -rf functions
       - name: Transpiler tracker
         run: npm run ci:tracker:build
-      - name: Upload binaries to release
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: tracker.js
-          asset_name: tracker.js
-          tag: mainrelease
-          overwrite: true
-          body: "Yay, another release! We're haven't automated release notes with useful text. Sorry."
       - name: Push to 'release-browser' branch so we can use it on jsdelivr
         run: |
           git config --global user.email "hugo@keel.xyz"
