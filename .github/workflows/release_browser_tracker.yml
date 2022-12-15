@@ -1,0 +1,25 @@
+name: Release browser tracker
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  test-functions-runtime:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - uses: actions/checkout@v3
+      - name: Run tests
+        run: npm run ci:tracker:build
+      - name: Upload binaries to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: tracker.js
+          asset_name: tracker.js
+          tag: ${{ github.ref }}
+          overwrite: true
+          body: "Yay, another release! We're haven't automated release notes with useful text. Sorry."
