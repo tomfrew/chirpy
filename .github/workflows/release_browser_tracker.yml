@@ -29,6 +29,7 @@ jobs:
         run: |
           git config --global user.email "hugo@keel.xyz"
           git config --global user.name "Auto Release"
+          git switch -c release-browser
           rm .gitignore
           git add .gitignore
           git add tracker.js
