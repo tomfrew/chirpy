@@ -1,7 +1,7 @@
 name: Release browser tracker
 on:
   push:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   release:
@@ -16,13 +16,13 @@ jobs:
         run: rm -rf functions
       - name: Transpiler tracker
         run: npm run ci:tracker:build
-      - name: Push to 'release-browser' branch so we can use it on jsdelivr
+      - name: Push to 'release' branch so we can use it on jsdelivr
         run: |
           git config --global user.email "hugo@keel.xyz"
           git config --global user.name "Auto Release"
-          git switch -c release-browser
+          git switch -c release
           rm .gitignore
           git add .gitignore
           git add tracker.js
           git commit -m "Add tracker.js"
-          git push --force origin release-browser
+          git push --force origin release
